@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orçamento Editável - Fig Soluções Web</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4a69ff;
+            --secondary-color: #6c42f5;
+            --text-color: #333333;
+            --border-color: #dddddd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f0f0; /* Fundo cinza na tela */
+            color: var(--text-color);
+            font-size: 12pt;
+            line-height: 1.5;
+        }
+
+        /* Folha A4 */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Cabeçalho */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 24pt;
+            font-weight: 700;
+            color: #1a1a3a;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .header-info {
+            text-align: right;
+            font-size: 10pt;
+        }
+
+        h1 {
+            font-size: 18pt;
+            text-transform: uppercase;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 14pt;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* --- CAMPOS EDITÁVEIS --- */
+        .client-info {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        .client-info td {
+            padding: 8px 5px;
+        }
+
+        /* Estilo do input na tela */
+        .input-editable {
+            width: 100%;
+            border: none;
+            background-color: #eef3ff; /* Fundo leve azul para indicar onde digitar */
+            font-family: 'Poppins', sans-serif;
+            font-size: 12pt;
+            color: #000;
+            padding: 5px;
+            border-bottom: 1px dashed var(--primary-color);
+            outline: none;
+        }
+
+        .input-editable::placeholder {
+            color: #999;
+            font-style: italic;
+            font-size: 10pt;
+        }
+
+        /* Tabela de Escopo e Preço */
+        .scope-box {
+            background-color: #fcfcfc;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tech-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .tech-list li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tech-list li::before {
+            content: '•';
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .price-box {
+            text-align: right;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f4ff;
+            border: 1px solid var(--primary-color);
+        }
+
+        .total-label {
+            font-weight: 600;
+            font-size: 14pt;
+        }
+
+        .total-value {
+            font-weight: 700;
+            font-size: 20pt;
+            color: var(--secondary-color);
+        }
+
+        .notes {
+            font-size: 9pt;
+            margin-top: 30px;
+            padding: 10px;
+            border: 1px dashed #999;
+            background-color: #fff;
+        }
+
+        .notes strong {
+            color: #d9534f;
+        }
+
+        .signatures {
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sig-block {
+            width: 45%;
+            text-align: center;
+            border-top: 1px solid #000;
+            padding-top: 10px;
+            font-size: 10pt;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 9pt;
+            color: #777;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+
+        /* Área de instruções na tela */
+        .instructions {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .print-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .print-btn:hover { background: var(--secondary-color); }
+
+        /* =========================================
+           CONFIGURAÇÃO MÁGICA DE IMPRESSÃO
+           ========================================= */
+        @media print {
+            body {
+                background: none;
+                -webkit-print-color-adjust: exact;
+            }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                border: none;
+                width: 100%;
+            }
+            .instructions, .print-btn-container {
+                display: none !important; /* Esconde botões */
+            }
+            
+            /* Transforma os inputs em texto puro na impressão */
+            .input-editable {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                font-weight: 600; /* Deixa o texto digitado em negrito */
+            }
+            /* Esconde o placeholder na impressão */
+            .input-editable::placeholder {
+                color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instructions">
+        <h3>📝 Instruções</h3>
+        <p>1. Preencha o <strong>Nome</strong> e o <strong>CPF/CNPJ</strong> nos campos azuis abaixo.</p>
+        <p>2. Clique no botão para imprimir. Os campos azuis sumirão e ficará apenas o texto.</p>
+        <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+    </div>
+
+    <div class="page">
+        <header>
+            <div class="logo">Fig Solu<span style="color: #4a69ff;">ções</span> Web</div>
+            <div class="header-info">
+                <strong>Data de Emissão:</strong> <span id="data-emissao"></span><br>
+                <strong>Validade:</strong> 15 dias<br>
+                <strong>Ref:</strong> #DEV-WEB-2025
+            </div>
+        </header>
+
+        <h1>Proposta de Desenvolvimento Web</h1>
+
+        <section>
+            <h2>Dados do Cliente</h2>
+            <table class="client-info">
+                <tr>
+                    <td width="20%"><strong>Nome/Empresa:</strong></td>
+                    <td><input type="text" class="input-editable" placeholder="Clique aqui para digitar o nome do cliente..."></td>
+                </tr>
+                <tr>
+                    <td><strong>CPF/CNPJ:</strong></td>
+                    <td><input type="text" class="input-editable" placeholder="Clique aqui para digitar o documento..."></td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>Escopo do Serviço</h2>
+            <div class="scope-box">
+                <p><strong>Serviço:</strong> Criação e Desenvolvimento de Website Institucional/Profissional.</p>
+                <p style="margin-top: 10px;"><strong>Tecnologias e Recursos Inclusos:</strong></p>
+                <ul class="tech-list">
+                    <li><strong>HTML5 Semântico:</strong> Estrutura moderna e otimizada.</li>
+                    <li><strong>CSS3:</strong> Estilização personalizada, responsiva (mobile-friendly) e visual profissional.</li>
+                    <li><strong>JavaScript (JS):</strong> Interatividade, animações e lógica de front-end.</li>
+                    <li><strong>Configuração de SEO:</strong> Otimização básica para mecanismos de busca.</li>
+                    <li><strong>Max-SEO:</strong> Otimização avançada de performance, tags e indexação.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Investimento e Pagamento</h2>
+            
+            <div class="price-box">
+                <span class="total-label">Valor Total do Serviço:</span><br>
+                <span class="total-value">R$ 500,00</span>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <p><strong>Formas de Pagamento Aceitas:</strong></p>
+                <ul class="tech-list">
+                    <li>Dinheiro (Espécie)</li>
+                    <li>PIX (Transferência Instantânea)</li>
+                    <li>Cartão de Crédito</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="notes">
+            <p><strong>⚠️ IMPORTANTE - ITENS NÃO INCLUSOS:</strong></p>
+            <p>Este orçamento refere-se exclusivamente ao serviço de desenvolvimento e codificação do site.</p>
+            <p style="margin-top: 5px;">
+                <strong>NÃO estão inclusos no valor acima:</strong>
+                Registro de Domínio (ex: .com.br), Serviços de Hospedagem (Servidor) ou custos recorrentes de manutenção, salvo se contratados à parte.
+            </p>
+        </section>
+
+        <div class="signatures">
+            <div class="sig-block">
+                <strong>Lucas Bezerra Carvalho Figueiredo</strong><br>
+                Diretor de Projetos - Full Stack<br>
+                CPF: 190.272.567-05<br>
+                <span style="color: #4a69ff;">Fig Soluções Web</span>
+            </div>
+        </div>
+
+        <footer>
+            Fig Soluções Web - Soluções Digitais de Alto Impacto<br>
+            Desenvolvimento Web | Sistemas | Consultoria
+        </footer>
+    </div>
+
+    <script>
+        // Data automática
+        const dataHoje = new Date();
+        const opcoes = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('data-emissao').textContent = dataHoje.toLocaleDateString('pt-BR', opcoes);
+    </script>
+
+</body>
+</html>
