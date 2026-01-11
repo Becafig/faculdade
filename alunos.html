@@ -14,7 +14,6 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Animação suave nas linhas da tabela */
         tr { transition: all 0.2s ease-in-out; }
         tr:hover { background-color: rgba(212, 175, 55, 0.05); }
     </style>
@@ -196,14 +195,11 @@
     </footer>
 
     <script>
-        // Data automática
         const dataHoje = new Date();
         document.getElementById('data-atualizacao').textContent = dataHoje.toLocaleDateString('pt-BR');
 
-        // Scroll Reveal
         ScrollReveal().reveal('.reveal-up', { distance: '30px', origin: 'bottom', duration: 800 });
 
-        // Função de Busca
         function filterTable() {
             var input, filter, table, tr, tdName, tdReg, i, txtValueName, txtValueReg;
             input = document.getElementById("searchInput");
@@ -212,9 +208,7 @@
             tr = table.getElementsByTagName("tr");
             var hasResult = false;
 
-            // Começa do índice 1 para pular o cabeçalho
             for (i = 1; i < tr.length; i++) {
-                // Pega a coluna Nome (index 0) e Registro (index 1)
                 tdName = tr[i].getElementsByTagName("td")[0];
                 tdReg = tr[i].getElementsByTagName("td")[1];
                 
@@ -222,12 +216,10 @@
                     txtValueName = tdName.textContent || tdName.innerText;
                     txtValueReg = tdReg.textContent || tdReg.innerText;
 
-                    // Verifica se bate com nome ou registro
                     if (txtValueName.toUpperCase().indexOf(filter) > -1 || txtValueReg.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";
                         hasResult = true;
                     } else {
-                        // Não esconde a linha de "Não encontrado" ainda
                         if (tr[i].id !== "noResults") {
                             tr[i].style.display = "none";
                         }
@@ -235,7 +227,6 @@
                 }
             }
 
-            // Controle da mensagem "Nenhum resultado"
             var noResultsRow = document.getElementById("noResults");
             if (hasResult) {
                 noResultsRow.style.display = "none";
