@@ -116,6 +116,38 @@
         </div>
     </section>
 
+    <section class="py-12 bg-[#050505]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-6 reveal-up">
+                <p class="text-gold text-xs font-bold uppercase tracking-widest">Nossa Estrutura e Eventos</p>
+            </div>
+            
+            <div class="relative w-full h-[300px] md:h-[500px] rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(212,175,55,0.1)] border border-gray-800 group reveal-up">
+                <div class="slider-item absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100">
+                    <img src="foto1.jpg" class="w-full h-full object-cover" alt="Foto Institucional 1">
+                </div>
+                <div class="slider-item absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="foto2.jpg" class="w-full h-full object-cover" alt="Foto Institucional 2">
+                </div>
+                <div class="slider-item absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="foto3.jpg" class="w-full h-full object-cover" alt="Foto Institucional 3">
+                </div>
+                <div class="slider-item absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img src="foto4.jpg" class="w-full h-full object-cover" alt="Foto Institucional 4">
+                </div>
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+
+                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
+                    <button class="slider-dot w-2 h-2 rounded-full bg-gold transition-all duration-300"></button>
+                    <button class="slider-dot w-2 h-2 rounded-full bg-gray-600 hover:bg-gray-400 transition-all duration-300"></button>
+                    <button class="slider-dot w-2 h-2 rounded-full bg-gray-600 hover:bg-gray-400 transition-all duration-300"></button>
+                    <button class="slider-dot w-2 h-2 rounded-full bg-gray-600 hover:bg-gray-400 transition-all duration-300"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="grade" class="py-24 bg-[#050505]">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12 reveal-up">
@@ -289,6 +321,34 @@
 
     <script>
         ScrollReveal().reveal('.reveal-up', { distance: '50px', origin: 'bottom', duration: 1000, delay: 200 });
+
+        // SCRIPT DO SLIDER AUTOMÁTICO
+        const slides = document.querySelectorAll('.slider-item');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+        const slideInterval = 4000; // 4 segundos
+
+        function showSlide(index) {
+            // Remove active classes
+            slides[currentSlide].classList.remove('opacity-100');
+            slides[currentSlide].classList.add('opacity-0');
+            dots[currentSlide].classList.remove('bg-gold');
+            dots[currentSlide].classList.add('bg-gray-600');
+
+            // Set new index
+            currentSlide = (index + slides.length) % slides.length;
+
+            // Add active classes
+            slides[currentSlide].classList.remove('opacity-0');
+            slides[currentSlide].classList.add('opacity-100');
+            dots[currentSlide].classList.remove('bg-gray-600');
+            dots[currentSlide].classList.add('bg-gold');
+        }
+
+        // Auto Advance
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, slideInterval);
     </script>
 </body>
 </html>
