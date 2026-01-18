@@ -286,6 +286,33 @@ A Educação Teológica traz um grande incentivo a todo cristão para que desenv
 
     <script>
         ScrollReveal().reveal('.reveal-up', { distance: '50px', origin: 'bottom', duration: 1000, delay: 200 });
+
+        const slides = document.querySelectorAll('.slider-item');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+        const slideInterval = 4000; // 4 segundos
+
+        function showSlide(index) {
+            // Remove active classes
+            slides[currentSlide].classList.remove('opacity-100');
+            slides[currentSlide].classList.add('opacity-0');
+            dots[currentSlide].classList.remove('bg-gold');
+            dots[currentSlide].classList.add('bg-gray-600');
+
+            // Set new index
+            currentSlide = (index + slides.length) % slides.length;
+
+            // Add active classes
+            slides[currentSlide].classList.remove('opacity-0');
+            slides[currentSlide].classList.add('opacity-100');
+            dots[currentSlide].classList.remove('bg-gray-600');
+            dots[currentSlide].classList.add('bg-gold');
+        }
+
+        // Auto Advance
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, slideInterval);
     </script>
 </body>
 </html>
