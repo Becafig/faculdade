@@ -127,3 +127,7 @@ body {
 
 .logofap {background-color: #f3f3f3; border-radius: 100%; padding: 5px;}
 #banner {opacity: 0.9;}
+
+.container {
+    max-width: 1000px;
+}
